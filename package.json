@@ -2,7 +2,7 @@
   "name": "@themas3212/tasd",
   "version": "0.0.1",
   "description": "library for working with TASD files",
-  "private": true,
+  "private": false,
   "main": "dist/lib.js",
   "browser": "dist'/lib.js",
   "scripts": {
@@ -15,6 +15,10 @@
     "dist/lib.js",
     "dist/lib.d.ts"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheMas3212/tasd-js.git"
+  },
   "devDependencies": {
     "@typescript-eslint/parser": "^5.31.0",
     "eslint": "^8.20.0",
