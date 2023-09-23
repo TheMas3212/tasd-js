@@ -14,7 +14,8 @@
   "license": "MIT",
   "files": [
     "dist/lib.js",
-    "dist/lib.d.ts"
+    "dist/*.d.ts",
+    "!dist/index.d.ts"
   ],
   "repository": {
     "type": "git",

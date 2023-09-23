@@ -5,11 +5,11 @@
       "sourceMap": true,
       "outDir": "dist",
       "declaration": true,
-      "target": "es6",
+      "target": "es2020",
       "strict": true
     },
     "lib": [
-      "es2015"
+      "es2020"
     ],
     "include": [
       "src/**/*"

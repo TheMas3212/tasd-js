@@ -4,6 +4,9 @@ https://github.com/bigbass1997/TASD-Spec
 
 This library is designed to work in both broswers and nodejs
 
+## This Library is still in flux much like the spec it is for
+## Anything could change between versions until a stable 1.0.0 is released
+
 # Usage
 `static TASD.parseFile(buffer: Uint8Array)`
 Try to parses a file from a Uint8Array
