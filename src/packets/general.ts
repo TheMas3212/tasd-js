@@ -1,6 +1,5 @@
 import { PACKET_TYPES } from "../constants";
-import { TASD } from "../file";
-import { encodeString, readString, readUint16, readUint32, readUint64, readUint8, writeString, writeUint16, writeUint32, writeUint64, writeUint8 } from "../utils";
+import { encodeString, readBoolean, readString, readUint16, readUint32, readUint64, readUint8, writeBoolean, writeString, writeUint16, writeUint32, writeUint64, writeUint8 } from "../utils";
 import { TASDPacket, buildBuffer } from "./utils";
 
 export class ConsoleTypePacket implements TASDPacket {
@@ -12,7 +11,7 @@ export class ConsoleTypePacket implements TASDPacket {
     return this.name.length + 1;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new ConsoleTypePacket(buffer[0], readString(buffer, 1, buffer.length));
+    return new this(readUint8(buffer, 0), readString(buffer, 1, buffer.length - 1));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(this.name.length + 1);
@@ -34,7 +33,7 @@ export class ConsoleRegionPacket implements TASDPacket {
     return 1;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new ConsoleRegionPacket(buffer[0]);
+    return new this(readUint8(buffer, 0));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(1);
@@ -55,7 +54,7 @@ export class GameTitlePacket implements TASDPacket {
     return this.title.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new GameTitlePacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.title);
@@ -75,7 +74,7 @@ export class ROMNamePacket implements TASDPacket {
     return this.name.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new ROMNamePacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.name);
@@ -95,7 +94,7 @@ export class AttributionPacket implements TASDPacket {
     return this.name.length + 1;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new AttributionPacket(buffer[0], readString(buffer, 1, buffer.length));
+    return new this(readUint8(buffer, 0), readString(buffer, 1, buffer.length - 1));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(this.name.length + 1);
@@ -117,7 +116,7 @@ export class CategoryPacket implements TASDPacket {
     return this.name.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new CategoryPacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.name);
@@ -137,7 +136,7 @@ export class EmulatorNamePacket implements TASDPacket {
     return this.name.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new EmulatorNamePacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.name);
@@ -157,7 +156,7 @@ export class EmulatorVersionPacket implements TASDPacket {
     return this.version.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new EmulatorVersionPacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.version);
@@ -177,7 +176,7 @@ export class EmulatorCorePacket implements TASDPacket {
     return this.core.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new EmulatorCorePacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.core);
@@ -197,7 +196,7 @@ export class TASLastModifedPacket implements TASDPacket {
     return 8;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new TASLastModifedPacket(readUint64(buffer, 0));
+    return new this(readUint64(buffer, 0));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(8);
@@ -218,7 +217,7 @@ export class DumpCreatedPacket implements TASDPacket {
     return 8;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new DumpCreatedPacket(readUint64(buffer, 0));
+    return new this(readUint64(buffer, 0));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(8);
@@ -239,7 +238,7 @@ export class DumpLastModifiedPacket implements TASDPacket {
     return 8;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new DumpLastModifiedPacket(readUint64(buffer, 0));
+    return new this(readUint64(buffer, 0));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(8);
@@ -260,7 +259,7 @@ export class TotalFramesPacket implements TASDPacket {
     return 4;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new TotalFramesPacket(readUint32(buffer, 0));
+    return new this(readUint32(buffer, 0));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(4);
@@ -281,7 +280,7 @@ export class RerecordsPacket implements TASDPacket {
     return 4;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new RerecordsPacket(readUint32(buffer, 0));
+    return new this(readUint32(buffer, 0));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(4);
@@ -302,7 +301,7 @@ export class SourceLinkPacket implements TASDPacket {
     return this.link.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new SourceLinkPacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.link);
@@ -322,7 +321,7 @@ export class BlankFramesPacket implements TASDPacket {
     return 2;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new BlankFramesPacket(readUint16(buffer, 0));
+    return new this(readUint16(buffer, 0));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(2);
@@ -343,7 +342,7 @@ export class VerifiedPacket implements TASDPacket {
     return 1;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new VerifiedPacket(readUint8(buffer, 0) !== 0);
+    return new this(readUint8(buffer, 0) !== 0);
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(2);
@@ -364,7 +363,7 @@ export class MovieLicensePacket implements TASDPacket {
     return this.link.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new MovieLicensePacket(readString(buffer, 0, buffer.length));
+    return new this(readString(buffer, 0, buffer.length));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = encodeString(this.link);
@@ -384,7 +383,7 @@ export class PortControllerPacket implements TASDPacket {
     return 3;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new PortControllerPacket(buffer[0], readUint16(buffer, 1));
+    return new this(readUint8(buffer, 0), readUint16(buffer, 1));
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(3);
