@@ -46,10 +46,10 @@ export function parse(type: number, buffer: Uint8Array): TASDPacket {
     // case PACKET_TYPES.GENESIS_GAME_GENIE_CODE: return XXXXX.fromBuffer(buffer);
     // Input
     case PACKET_TYPES.INPUT_CHUNK: return input.InputChunkPacket.fromBuffer(buffer);
-    // case PACKET_TYPES.INPUT_MOMENT: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.TRANSITION: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.LAG_FRAME_CHUNK: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.MOVIE_TRANSITION: return XXXXX.fromBuffer(buffer);
+    case PACKET_TYPES.INPUT_MOMENT: return input.InputMomentPacket.fromBuffer(buffer);
+    case PACKET_TYPES.TRANSITION: return input.TransitionPacket.fromBuffer(buffer);
+    case PACKET_TYPES.LAG_FRAME_CHUNK: return input.LagFrameChunkPacket.fromBuffer(buffer);
+    case PACKET_TYPES.MOVIE_TRANSITION: return input.MovieTransitionPacket.fromBuffer(buffer);
     // Extra
     // case PACKET_TYPES.COMMENT: return XXXXX.fromBuffer(buffer);
     // case PACKET_TYPES.EXPERIMENTAL: return XXXXX.fromBuffer(buffer);
