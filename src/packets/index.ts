@@ -1,9 +1,13 @@
 import { PACKET_TYPES } from "../constants";
-import { AttributionPacket, BlankFramesPacket, CategoryPacket, ConsoleRegionPacket, ConsoleTypePacket, DumpCreatedPacket, DumpLastModifiedPacket, EmulatorCorePacket, EmulatorNamePacket, EmulatorVersionPacket, GameTitlePacket, MovieLicensePacket, PortControllerPacket, ROMNamePacket, RerecordsPacket, SourceLinkPacket, TASLastModifedPacket, TotalFramesPacket, VerifiedPacket } from "./general";
-import { InputChunkPacket } from "./input";
 import { TASDPacket, UnknownPacket } from "./utils";
+
 import * as general from "./general";
+import * as nes from "./nes";
+import * as snes from "./snes";
+import * as genesis from "./genesis";
 import * as input from "./input";
+import * as extra from "./extra";
+
 export * as General from './general';
 export * as Input from './input';
 
@@ -33,17 +37,17 @@ export function parse(type: number, buffer: Uint8Array): TASDPacket {
     case PACKET_TYPES.MOVIE_FILE: return general.MovieFilePacket.fromBuffer(buffer);
     case PACKET_TYPES.PORT_CONTROLLER: return general.PortControllerPacket.fromBuffer(buffer);
     // NES
-    // case PACKET_TYPES.NES_LATCH_FILTER: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.NES_CLOCK_FILTER: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.NES_OVERREAD: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.NES_GAME_GENIE_CODE: return XXXXX.fromBuffer(buffer);
+    case PACKET_TYPES.NES_LATCH_FILTER: return nes.NESLatchFilterPacket.fromBuffer(buffer);
+    case PACKET_TYPES.NES_CLOCK_FILTER: return nes.NESClockFilterPacket.fromBuffer(buffer);
+    case PACKET_TYPES.NES_OVERREAD: return nes.NESOverreadPacket.fromBuffer(buffer);
+    case PACKET_TYPES.NES_GAME_GENIE_CODE: return nes.NESGameGenieCodePacket.fromBuffer(buffer);
     // SNES
-    // case PACKET_TYPES.SNES_CLOCK_FILTER: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.SNES_OVERREAD: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.SNES_GAME_GENIE_CODE: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.SNES_LATCH_TRAIN: return XXXXX.fromBuffer(buffer);
+    case PACKET_TYPES.SNES_CLOCK_FILTER: return snes.SNESClockFilterPacket.fromBuffer(buffer);
+    case PACKET_TYPES.SNES_OVERREAD: return snes.SNESOverreadPacket.fromBuffer(buffer);
+    case PACKET_TYPES.SNES_GAME_GENIE_CODE: return snes.SNESGameGenieCodePacket.fromBuffer(buffer);
+    case PACKET_TYPES.SNES_LATCH_TRAIN: return snes.SNESLatchTrainPacket.fromBuffer(buffer);
     // Genesis
-    // case PACKET_TYPES.GENESIS_GAME_GENIE_CODE: return XXXXX.fromBuffer(buffer);
+    case PACKET_TYPES.GENESIS_GAME_GENIE_CODE: return genesis.GenesisGameGenieCodePacket.fromBuffer(buffer);
     // Input
     case PACKET_TYPES.INPUT_CHUNK: return input.InputChunkPacket.fromBuffer(buffer);
     case PACKET_TYPES.INPUT_MOMENT: return input.InputMomentPacket.fromBuffer(buffer);
@@ -51,9 +55,9 @@ export function parse(type: number, buffer: Uint8Array): TASDPacket {
     case PACKET_TYPES.LAG_FRAME_CHUNK: return input.LagFrameChunkPacket.fromBuffer(buffer);
     case PACKET_TYPES.MOVIE_TRANSITION: return input.MovieTransitionPacket.fromBuffer(buffer);
     // Extra
-    // case PACKET_TYPES.COMMENT: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.EXPERIMENTAL: return XXXXX.fromBuffer(buffer);
-    // case PACKET_TYPES.UNSPECIFIED: return XXXXX.fromBuffer(buffer);
+    case PACKET_TYPES.COMMENT: return extra.CommentPacket.fromBuffer(buffer);
+    case PACKET_TYPES.EXPERIMENTAL: return extra.ExperimentalPacket.fromBuffer(buffer);
+    case PACKET_TYPES.UNSPECIFIED: return extra.UnspecifiedPacket.fromBuffer(buffer);
     // Unknown
     default: return new UnknownPacket(type, buffer);
   }
