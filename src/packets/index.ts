@@ -9,7 +9,11 @@ import * as input from "./input";
 import * as extra from "./extra";
 
 export * as General from './general';
+export * as NES from './nes';
+export * as SNES from './snes';
+export * as Genesis from './genesis';
 export * as Input from './input';
+export * as Extra from './extra';
 
 export function parse(type: number, buffer: Uint8Array): TASDPacket {
   switch (type) {
