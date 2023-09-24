@@ -93,3 +93,10 @@ export function writeString(str: string, buffer: Uint8Array, index: number) {
 export function encodeString(str: string) {
   return encoder.encode(str);
 }
+
+export function readBoolean(buffer: Uint8Array, index: number) {
+  return buffer[index] !== 0;
+}
+export function writeBoolean(bool: boolean, buffer: Uint8Array, index: number) {
+  buffer[index] = bool ? 1 : 0;
+}
