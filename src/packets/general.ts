@@ -354,6 +354,69 @@ export class VerifiedPacket implements TASDPacket {
   }
 }
 
+export class MemoryInitPacket implements TASDPacket {
+  constructor(
+    public datatype: number,
+    public device: number,
+    public required: boolean,
+    public name: string,
+    public data: Uint8Array
+  ) {}
+  get key() {
+    return PACKET_TYPES.MEMORY_INIT;
+  }
+  get size() {
+    return 5 + this.name.length + this.data.length;
+  }
+  static fromBuffer(buffer: Uint8Array) {
+    const datatype = readUint8(buffer, 0);
+    const device = readUint16(buffer, 1);
+    const required = readBoolean(buffer, 3);
+    const nlen = readUint8(buffer, 4);
+    let index = 5;
+    const name = readString(buffer, index, nlen);
+    index += nlen;
+    const data = buffer.subarray(index);
+    return new this(datatype, device, required, name, data);
+  }
+  toBuffer(g_keylen: number): Uint8Array {
+    const payload = new Uint8Array(this.size);
+    writeUint8(this.datatype, payload, 0);
+    writeUint16(this.device, payload, 1);
+    writeBoolean(this.required, payload, 3);
+    writeUint8(this.name.length, payload, 4);
+    writeString(this.name, payload, 5);
+    payload.set(this.data, 5+this.name.length);
+    return buildBuffer(g_keylen, this.key, payload);
+  }
+  toString() {
+    return `MemoryInit ${this.datatype}, ${this.device}, ${this.required}, ${this.name}, ${this.data.length}`;
+  }
+}
+
+export class GameIdentiferPacket implements TASDPacket {
+  constructor(public type: number, public base: number, public identifier: Uint8Array) {}
+  get key() {
+    return PACKET_TYPES.GAME_IDENTIFIER;
+  }
+  get size() {
+    return 2 + this.identifier.length;
+  }
+  static fromBuffer(buffer: Uint8Array) {
+    return new this(readUint8(buffer, 0), readUint8(buffer, 1), buffer.subarray(2));
+  }
+  toBuffer(g_keylen: number): Uint8Array {
+    const payload = new Uint8Array(this.size);
+    writeUint8(this.type, payload, 0);
+    writeUint8(this.base, payload, 1);
+    payload.set(this.identifier, 2);
+    return buildBuffer(g_keylen, this.key, payload);
+  }
+  toString(): string {
+    return `GameIdentifier ${this.type}, ${this.base}, ${this.identifier}`;
+  }
+}
+
 export class MovieLicensePacket implements TASDPacket {
   constructor(public link: string) {}
   get key() {
@@ -371,6 +434,32 @@ export class MovieLicensePacket implements TASDPacket {
   }
   toString() {
     return `SourceLink ${this.link}`;
+  }
+}
+
+export class MovieFilePacket implements TASDPacket {
+  constructor(public name: string, public data: Uint8Array) {}
+  get key() {
+    return PACKET_TYPES.MOVIE_FILE;
+  }
+  get size() {
+    return 1 + this.name.length + this.data.length;
+  }
+  static fromBuffer(buffer: Uint8Array) {
+    const nlen = readUint8(buffer, 0);
+    const name = readString(buffer, 1, nlen);
+    const data = buffer.subarray(nlen+1);
+    return new this(name, data);
+  }
+  toBuffer(g_keylen: number): Uint8Array {
+    const payload = new Uint8Array(this.size);
+    writeUint8(this.name.length, payload, 0);
+    writeString(this.name, payload, 1);
+    payload.set(this.data, 1 + this.name.length);
+    return buildBuffer(g_keylen, this.key, payload);
+  }
+  toString(): string {
+    return `MovieFile ${this.name}, ${this.data.length}`;
   }
 }
 
