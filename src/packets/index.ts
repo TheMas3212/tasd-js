@@ -40,14 +40,14 @@ export function parse(type: number, buffer: Uint8Array): TASDPacket {
     case PACKET_TYPES.MOVIE_LICENSE: return general.MovieLicensePacket.fromBuffer(buffer);
     case PACKET_TYPES.MOVIE_FILE: return general.MovieFilePacket.fromBuffer(buffer);
     case PACKET_TYPES.PORT_CONTROLLER: return general.PortControllerPacket.fromBuffer(buffer);
+    case PACKET_TYPES.PORT_OVERREAD: return general.PortOverreadPacket.fromBuffer(buffer);
     // NES
     case PACKET_TYPES.NES_LATCH_FILTER: return nes.NESLatchFilterPacket.fromBuffer(buffer);
     case PACKET_TYPES.NES_CLOCK_FILTER: return nes.NESClockFilterPacket.fromBuffer(buffer);
-    case PACKET_TYPES.NES_OVERREAD: return nes.NESOverreadPacket.fromBuffer(buffer);
     case PACKET_TYPES.NES_GAME_GENIE_CODE: return nes.NESGameGenieCodePacket.fromBuffer(buffer);
     // SNES
+    case PACKET_TYPES.SNES_LATCH_FILTER: return snes.SNESLatchFilterPacket.fromBuffer(buffer);
     case PACKET_TYPES.SNES_CLOCK_FILTER: return snes.SNESClockFilterPacket.fromBuffer(buffer);
-    case PACKET_TYPES.SNES_OVERREAD: return snes.SNESOverreadPacket.fromBuffer(buffer);
     case PACKET_TYPES.SNES_GAME_GENIE_CODE: return snes.SNESGameGenieCodePacket.fromBuffer(buffer);
     case PACKET_TYPES.SNES_LATCH_TRAIN: return snes.SNESLatchTrainPacket.fromBuffer(buffer);
     // Genesis

@@ -1,5 +1,9 @@
 import { PACKET_TYPES } from "../constants";
-import { encodeString, readBoolean, readString, readUint16, readUint32, readUint64, readUint8, writeBoolean, writeString, writeUint16, writeUint32, writeUint64, writeUint8 } from "../utils";
+import {
+  encodeString, readString, writeString, readBoolean, writeBoolean,
+  readUint8, writeUint8, readUint16, writeUint16,
+  readUint32, writeUint32, readUint64, writeUint64
+} from "../utils";
 import { TASDPacket, buildBuffer } from "./utils";
 
 export class ConsoleTypePacket implements TASDPacket {
@@ -482,5 +486,27 @@ export class PortControllerPacket implements TASDPacket {
   }
   toString() {
     return `PortController ${this.port}, 0x${this.type.toString(16).padStart(4, '0')}`;
+  }
+}
+
+export class PortOverreadPacket implements TASDPacket {
+  constructor(public port: number, public high: boolean) {}
+  get key() {
+    return PACKET_TYPES.PORT_OVERREAD;
+  }
+  get size() {
+    return 2;
+  }
+  static fromBuffer(buffer: Uint8Array) {
+    return new this(readUint8(buffer, 0), readBoolean(buffer, 1));
+  }
+  toBuffer(g_keylen: number): Uint8Array {
+    const payload = new Uint8Array(2);
+    writeUint8(this.port, payload, 0);
+    writeBoolean(this.high, payload, 1);
+    return buildBuffer(g_keylen, this.key, payload);
+  }
+  toString(): string {
+    return `PortOverreadPacket ${this.port}, ${this.high}`;
   }
 }

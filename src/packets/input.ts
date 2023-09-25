@@ -25,7 +25,12 @@ export class InputChunkPacket implements TASDPacket {
 }
 
 export class InputMomentPacket implements TASDPacket {
-  constructor(public port: number, public indexType: number, public index: bigint, public inputs: Uint8Array) {}
+  constructor(
+    public port: number,
+    public indexType: number,
+    public index: bigint,
+    public inputs: Uint8Array
+  ) {}
   get key() {
     return PACKET_TYPES.INPUT_MOMENT;
   }
@@ -53,26 +58,34 @@ export class InputMomentPacket implements TASDPacket {
 }
 
 export class TransitionPacket implements TASDPacket {
-  constructor(public indexType: number, public index: bigint, public type: number, public data: Uint8Array) {}
+  constructor(
+    public indexType: number,
+    public port: number,
+    public index: bigint,
+    public type: number,
+    public data: Uint8Array
+  ) {}
   get key() {
     return PACKET_TYPES.TRANSITION;
   }
   get size() {
-    return 10 + this.data.length;
+    return 11 + this.data.length;
   }
   static fromBuffer(buffer: Uint8Array) {
     const indexType = readUint8(buffer, 0);
-    const index = readUint64(buffer, 1);
-    const type = readUint8(buffer, 9);
-    const data = buffer.subarray(10);
-    return new this(indexType, index, type, data);
+    const port = readUint8(buffer, 1);
+    const index = readUint64(buffer, 2);
+    const type = readUint8(buffer, 10);
+    const data = buffer.subarray(11);
+    return new this(indexType, port, index, type, data);
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(this.size);
     writeUint8(this.indexType, payload, 0);
-    writeUint64(this.index, payload, 1);
-    writeUint8(this.type, payload, 9);
-    payload.set(this.data, 10);
+    writeUint8(this.port, payload, 1);
+    writeUint64(this.index, payload, 2);
+    writeUint8(this.type, payload, 10);
+    payload.set(this.data, 11);
     return buildBuffer(g_keylen, this.key, payload);
   }
   toString(): string {

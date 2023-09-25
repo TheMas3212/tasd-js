@@ -1,6 +1,27 @@
 import { PACKET_TYPES } from "../constants";
-import { encodeString, readBoolean, readString, readUint64, readUint8, writeBoolean, writeUint64, writeUint8 } from "../utils";
+import { encodeString, readString, readUint16, readUint64, readUint8, writeUint16, writeUint64, writeUint8 } from "../utils";
 import { TASDPacket, buildBuffer } from "./utils";
+
+export class SNESLatchFilterPacket implements TASDPacket {
+  constructor(public time: number) {}
+  get key() {
+    return PACKET_TYPES.SNES_LATCH_FILTER;
+  }
+  get size() {
+    return 2;
+  }
+  static fromBuffer(buffer: Uint8Array) {
+    return new this(readUint16(buffer, 0));
+  }
+  toBuffer(g_keylen: number): Uint8Array {
+    const payload = new Uint8Array(2);
+    writeUint16(this.time, payload, 0);
+    return buildBuffer(g_keylen, this.key, payload);
+  }
+  toString(): string {
+    return `SNESLatchFilter ${this.time}`;
+  }
+}
 
 export class SNESClockFilterPacket implements TASDPacket {
   constructor(public time: number) {}
@@ -20,27 +41,6 @@ export class SNESClockFilterPacket implements TASDPacket {
   }
   toString(): string {
     return `SNESClockFilter ${this.time}`;
-  }
-}
-
-export class SNESOverreadPacket implements TASDPacket {
-  constructor(public high: boolean) {}
-  get key() {
-    return PACKET_TYPES.SNES_OVERREAD;
-  }
-  get size() {
-    return 1;
-  }
-  static fromBuffer(buffer: Uint8Array) {
-    return new this(readBoolean(buffer, 0));
-  }
-  toBuffer(g_keylen: number): Uint8Array {
-    const payload = new Uint8Array(1);
-    writeBoolean(this.high, payload, 0);
-    return buildBuffer(g_keylen, this.key, payload);
-  }
-  toString(): string {
-    return `SNESOverread ${this.high}`;
   }
 }
 

@@ -1,5 +1,5 @@
 import { PACKET_TYPES } from "../constants";
-import { encodeString, readBoolean, readString, readUint16, readUint8, writeBoolean, writeUint16, writeUint8 } from "../utils";
+import { encodeString, readString, readUint16, readUint8, writeUint16, writeUint8 } from "../utils";
 import { TASDPacket, buildBuffer } from "./utils";
 
 export class NESLatchFilterPacket implements TASDPacket {
@@ -41,27 +41,6 @@ export class NESClockFilterPacket implements TASDPacket {
   }
   toString(): string {
     return `NESClockFilter ${this.time}`;
-  }
-}
-
-export class NESOverreadPacket implements TASDPacket {
-  constructor(public high: boolean) {}
-  get key() {
-    return PACKET_TYPES.NES_OVERREAD;
-  }
-  get size() {
-    return 1;
-  }
-  static fromBuffer(buffer: Uint8Array) {
-    return new this(readBoolean(buffer, 0));
-  }
-  toBuffer(g_keylen: number): Uint8Array {
-    const payload = new Uint8Array(1);
-    writeBoolean(this.high, payload, 0);
-    return buildBuffer(g_keylen, this.key, payload);
-  }
-  toString(): string {
-    return `NESOverread ${this.high}`;
   }
 }
 

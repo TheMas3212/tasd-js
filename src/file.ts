@@ -1,4 +1,4 @@
-import { packetName, PACKET_TYPES } from "./constants";
+import { PACKET_TYPES } from "./constants";
 import { parse } from "./packets";
 import { DumpLastModifiedPacket, PortControllerPacket } from "./packets/general";
 import { InputChunkPacket } from "./packets/input";
