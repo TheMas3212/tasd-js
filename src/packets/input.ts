@@ -55,6 +55,12 @@ export class InputMomentPacket implements TASDPacket {
   toString(): string {
     return `InputMoment ${this.port}, ${this.indexType}, ${this.index}, ${this.inputs.length}`;
   }
+  static readonly INPUT_MOMENT_INDEX_TYPE = {
+    FRAME:            0x01,
+    CYCLE_COUNT:      0x02,
+    MILLISECONDS:     0x03,
+    MICROSECONDS_X10: 0x04
+  } as const;
 }
 
 export class TransitionPacket implements TASDPacket {
@@ -91,6 +97,19 @@ export class TransitionPacket implements TASDPacket {
   toString(): string {
     return `Transition ${this.indexType}, ${this.index}, ${this.type}, ${this.data.length}`;
   }
+  static readonly TRANSITION_INDEX_TYPE = {
+    FRAME:              0x01,
+    CYCLE_COUNT:        0x02,
+    MILLISECONDS:       0x03,
+    MICROSECONDS_X10:   0x04,
+    INPUT_CHUNK_INDEX:  0x05
+  } as const;
+  static readonly TRANSITION_TYPE = {
+    SOFT_RESET:         0x01,
+    POWER_RESET:        0x02,
+    RESTART_TASD_FILE:  0x03,
+    PACKET_DERIVED:     0xFF
+  } as const;
 }
 
 export class LagFrameChunkPacket implements TASDPacket {
@@ -141,4 +160,10 @@ export class MovieTransitionPacket implements TASDPacket {
   toString(): string {
     return `MovieTransition ${this.frame}, ${this.type}, ${this.data.length}`;
   }
+  static readonly MOVIE_TRANSITION_TYPE = {
+    SOFT_RESET:         0x01,
+    POWER_RESET:        0x02,
+    RESTART_TASD_FILE:  0x03,
+    PACKET_DERIVED:     0xFF
+  } as const;
 }

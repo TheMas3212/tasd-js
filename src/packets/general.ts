@@ -26,6 +26,18 @@ export class ConsoleTypePacket implements TASDPacket {
   toString() {
     return `ConsoleType ${this.type}, ${this.name}`;
   }
+  static readonly CONSOLE_TYPE = {
+    NES:     0x01,
+    SNES:    0x02,
+    N64:     0x03,
+    GC:      0x04,
+    GB:      0x05,
+    GBC:     0x06,
+    GBA:     0x07,
+    GENESIS: 0x08,
+    A2600:   0x09,
+    CUSTOM:  0xFF
+  } as const;
 }
 
 export class ConsoleRegionPacket implements TASDPacket {
@@ -47,6 +59,11 @@ export class ConsoleRegionPacket implements TASDPacket {
   toString() {
     return `ConsoleRegion ${this.region}`;
   }
+  static readonly CONSOLE_REGION = {
+    NTSC:   0x01,
+    PAL:    0x02,
+    OTHER:  0xFF
+  } as const;
 }
 
 export class GameTitlePacket implements TASDPacket {
@@ -109,6 +126,13 @@ export class AttributionPacket implements TASDPacket {
   toString() {
     return `Attribution ${this.type}, ${this.name}`;
   }
+  static readonly ATTRIBUTION_TYPE = {
+    AUTHOR:               0x01,
+    VERIFIER:             0x02,
+    TASD_FILE_CREATOR:    0x03,
+    TASD_FILE_EDITOR:     0x04,
+    OTHER:                0xFF
+  } as const;
 }
 
 export class CategoryPacket implements TASDPacket {
@@ -396,6 +420,31 @@ export class MemoryInitPacket implements TASDPacket {
   toString() {
     return `MemoryInit ${this.datatype}, ${this.device}, ${this.required}, ${this.name}, ${this.data.length}`;
   }
+  static readonly MEMORY_INIT_TYPE = {
+    NONE:                     0x01,
+    ALL_00:                   0x02,
+    ALL_FF:                   0x03,
+    PATTERN_00000000FFFFFFFF: 0x04,
+    RANDOM:                   0x05,
+    CUSTOM:                   0xFF
+  } as const;
+  static readonly MEMORY_INIT_DEVICE = {
+    NES_CPU_RAM:        0x0101,
+    NES_CART_SRAM:      0x0102,
+    SNES_CPU_RAM:       0x0201,
+    SNES_CART_SRAM:     0x0202,
+    GB_CPU_RAM:         0x0501,
+    GB_CART_SRAM:       0x0502,
+    GBC_CPU_RAM:        0x0601,
+    GBC_CART_SRAM:      0x0602,
+    GBA_CPU_RAM:        0x0701,
+    GBA_CART_SRAM:      0x0702,
+    GENESIS_CPU_RAM:    0x0801,
+    GENESIS_CART_SRAM:  0x0802,
+    A2600_CPU_RAM:      0x0901,
+    A2600_CART_SRAM:    0x0902,
+    CUSTOM:             0xFFFF
+  } as const;
 }
 
 export class GameIdentiferPacket implements TASDPacket {
@@ -419,6 +468,33 @@ export class GameIdentiferPacket implements TASDPacket {
   toString(): string {
     return `GameIdentifier ${this.type}, ${this.base}, ${this.identifier}`;
   }
+  static readonly IDENTIFIER_TYPE = {
+    CRC8:        0x01,
+    CRC16:       0x02,
+    CRC32:       0x03,
+    MD5:         0x04,
+    SHA1:        0x05,
+    SHA224:      0x06,
+    SHA256:      0x07,
+    SHA384:      0x08,
+    SHA512:      0x09,
+    SHA512_224:  0x0A,
+    SHA512_256:  0x0B,
+    SHA3_224:    0x0C,
+    SHA3_256:    0x0D,
+    SHA3_384:    0x0E,
+    SHA3_512:    0x0F,
+    SHAKE_128:   0x10,
+    SHAKE_256:   0x11,
+    OTHER:       0xFF,
+  } as const;
+  static readonly IDENTIFIER_BASE = {
+    RAW_BINARY:   0x01,
+    HEX:          0x02,
+    BASE32:       0x03,
+    BASE64:       0x04,
+    OTHER:        0xFF
+  } as const;
 }
 
 export class MovieLicensePacket implements TASDPacket {
@@ -487,6 +563,36 @@ export class PortControllerPacket implements TASDPacket {
   toString() {
     return `PortController ${this.port}, 0x${this.type.toString(16).padStart(4, '0')}`;
   }
+  static readonly CONTROLLER_TYPE = {
+    NES_STANDARD_CONTROLLER:                      0x0101,
+    NES_FOUR_SCORE:                               0x0102,
+    NES_ZAPPER:                                   0x0103,
+    NES_POWER_PAD:                                0x0104,
+    FAMICOM_FAMILY_BASIC_KEYBOARD:                0x0105,
+    SNES_STANDARD_CONTROLLER:                     0x0201,
+    SNES_SUPER_MULTITAP:                          0x0202,
+    SNES_MOUSE:                                   0x0203,
+    SNES_SUPERSCOPE:                              0x0204,
+    N64_STANDARD_CONTROLLER:                      0x0301,
+    N64_STANDARD_CONTROLLER_WITH_RUMBLE_PAK:      0x0302,
+    N64_STANDARD_CONTROLLER_WITH_CONTROLLER_PAK:  0x0303,
+    N64_STANDARD_CONTROLLER_WITH_TRANSFER_PAK:    0x0304,
+    N64_MOUSE:                                    0x0305,
+    N64_VOICE_RECOGNITION_UNIT:                   0x0306,
+    N64_RANDNET_KEYBOARD:                         0x0307,
+    N64_DENSHA_DE_GO:                             0x0308,
+    GC_STANDARD_CONTROLLER:                       0x0401,
+    GC_KEYBOARD:                                  0x0402,
+    GB_GAMEPAD:                                   0x0501,
+    GBC_GAMEPAD:                                  0x0601,
+    GBA_GAMEPAD:                                  0x0701,
+    GENESIS_3BUTTON:                              0x0801,
+    GENESIS_6BUTTON:                              0x0802,
+    A2600_JOYSTICK:                               0x0901,
+    A2600_PADDLE:                                 0x0902,
+    A2600_KEYBOARD_CONTROLLER:                    0x0903,
+    OTHER_UNSPECIFIED:                            0xFFFF,
+  } as const;
 }
 
 export class PortOverreadPacket implements TASDPacket {
