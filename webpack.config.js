@@ -16,6 +16,10 @@ module.exports = {
   },
   output: {
     filename: 'lib.js',
+    library: {
+      type: 'commonjs'
+    },
     path: path.resolve(__dirname, 'dist'),
+    clean: true
   }
 };

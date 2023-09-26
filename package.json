@@ -8,7 +8,8 @@
   "types": "dist/lib.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "prepublish": "npm run build"
   },
   "author": "TheMas3212",
   "license": "MIT",
