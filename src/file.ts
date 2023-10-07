@@ -29,7 +29,7 @@ export class TASD {
     writeUint8(this.g_keylen, header, 6);
     const packets = [ header ];
     if (this._isDirty) {
-      this.packets = this.packets.filter((packet) => packet.key === PACKET_TYPES.DUMP_LAST_MODIFIED);
+      this.packets = this.packets.filter((packet) => packet.key !== PACKET_TYPES.DUMP_LAST_MODIFIED);
       this.packets.push(new DumpLastModifiedPacket(BigInt(Date.now())));
     }
     for (const packet of this.packets) {
