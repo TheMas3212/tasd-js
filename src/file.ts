@@ -30,7 +30,7 @@ export class TASD {
     const packets = [ header ];
     if (this._isDirty) {
       this.packets = this.packets.filter((packet) => packet.key !== PACKET_TYPES.DUMP_LAST_MODIFIED);
-      this.packets.push(new DumpLastModifiedPacket(BigInt(Date.now())));
+      this.packets.push(new DumpLastModifiedPacket(BigInt(Date.now() / 1000)));
     }
     for (const packet of this.packets) {
       packets.push(packet.toBuffer(this.g_keylen));
