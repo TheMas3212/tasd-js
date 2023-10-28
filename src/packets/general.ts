@@ -448,49 +448,53 @@ export class MemoryInitPacket implements TASDPacket {
 }
 
 export class GameIdentiferPacket implements TASDPacket {
-  constructor(public type: number, public base: number, public identifier: Uint8Array) {}
+  constructor(public type: number, public base: number, public name: string, public identifier: Uint8Array) {}
   get key() {
     return PACKET_TYPES.GAME_IDENTIFIER;
   }
   get size() {
-    return 2 + this.identifier.length;
+    return 2 + this.name.length + this.identifier.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    return new this(readUint8(buffer, 0), readUint8(buffer, 1), buffer.subarray(2));
+    const type = readUint8(buffer, 0)
+    const base = readUint8(buffer, 1)
+    const nlen = readUint8(buffer, 2);
+    const name = readString(buffer, 3, nlen);
+    const identifier = buffer.subarray(3 + nlen);
+    return new this(type, base, name, identifier);
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(this.size);
     writeUint8(this.type, payload, 0);
     writeUint8(this.base, payload, 1);
-    payload.set(this.identifier, 2);
+    writeUint8(this.name.length, payload, 2);
+    writeString(this.name, payload, 3);
+    payload.set(this.identifier, 3+this.name.length);
     return buildBuffer(g_keylen, this.key, payload);
   }
   toString(): string {
     return `GameIdentifier ${this.type}, ${this.base}, ${this.identifier}`;
   }
   static readonly IDENTIFIER_TYPE = {
-    CRC8:        0x01,
-    CRC16:       0x02,
-    CRC32:       0x03,
-    MD5:         0x04,
-    SHA1:        0x05,
-    SHA224:      0x06,
-    SHA256:      0x07,
-    SHA384:      0x08,
-    SHA512:      0x09,
-    SHA512_224:  0x0A,
-    SHA512_256:  0x0B,
-    SHA3_224:    0x0C,
-    SHA3_256:    0x0D,
-    SHA3_384:    0x0E,
-    SHA3_512:    0x0F,
-    SHAKE_128:   0x10,
-    SHAKE_256:   0x11,
+    MD5:         0x01,
+    SHA1:        0x02,
+    SHA224:      0x03,
+    SHA256:      0x04,
+    SHA384:      0x05,
+    SHA512:      0x06,
+    SHA512_224:  0x07,
+    SHA512_256:  0x08,
+    SHA3_224:    0x09,
+    SHA3_256:    0x0A,
+    SHA3_384:    0x0B,
+    SHA3_512:    0x0C,
+    SHAKE_128:   0x0D,
+    SHAKE_256:   0x0E,
     OTHER:       0xFF,
   } as const;
   static readonly IDENTIFIER_BASE = {
     RAW_BINARY:   0x01,
-    HEX:          0x02,
+    BASE16:       0x02,
     BASE32:       0x03,
     BASE64:       0x04,
     OTHER:        0xFF
