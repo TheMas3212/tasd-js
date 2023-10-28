@@ -1,6 +1,6 @@
 {
   "name": "@themas3212/tasd",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "library for working with TASD files",
   "private": false,
   "main": "dist/lib.js",
