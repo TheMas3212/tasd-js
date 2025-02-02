@@ -1,5 +1,5 @@
 import { PACKET_TYPES } from "../constants";
-import { readUint32, readUint64, readUint8, writeUint32, writeUint64, writeUint8 } from "../utils";
+import { readBoolean, readUint32, readUint64, readUint8, writeBoolean, writeUint32, writeUint64, writeUint8 } from "../utils";
 import { TASDPacket, buildBuffer } from "./utils";
 
 export class InputChunkPacket implements TASDPacket {
@@ -27,6 +27,7 @@ export class InputChunkPacket implements TASDPacket {
 export class InputMomentPacket implements TASDPacket {
   constructor(
     public port: number,
+    public hold: boolean,
     public indexType: number,
     public index: bigint,
     public inputs: Uint8Array
@@ -39,21 +40,23 @@ export class InputMomentPacket implements TASDPacket {
   }
   static fromBuffer(buffer: Uint8Array) {
     const port = readUint8(buffer, 0);
-    const indexType = readUint8(buffer, 1);
-    const index = readUint64(buffer, 2);
-    const inputs = buffer.subarray(10);
-    return new this(port, indexType, index, inputs);
+    const hold = readBoolean(buffer, 1);
+    const indexType = readUint8(buffer, 2);
+    const index = readUint64(buffer, 3);
+    const inputs = buffer.subarray(11);
+    return new this(port, hold, indexType, index, inputs);
   }
   toBuffer(g_keylen: number): Uint8Array {
     const payload = new Uint8Array(this.size);
     writeUint8(this.port, payload, 0);
-    writeUint8(this.indexType, payload, 1);
-    writeUint64(this.index, payload, 2);
-    payload.set(this.inputs, 10);
+    writeBoolean(this.hold, payload, 1);
+    writeUint8(this.indexType, payload, 2);
+    writeUint64(this.index, payload, 3);
+    payload.set(this.inputs, 11);
     return buildBuffer(g_keylen, this.key, payload);
   }
   toString(): string {
-    return `InputMoment ${this.port}, ${this.indexType}, ${this.index}, ${this.inputs.length}`;
+    return `InputMoment ${this.port}, ${this.hold}, ${this.indexType}, ${this.index}, ${this.inputs.length}`;
   }
   static readonly INPUT_MOMENT_INDEX_TYPE = {
     FRAME:            0x01,
