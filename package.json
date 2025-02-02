@@ -23,8 +23,10 @@
     "url": "https://github.com/TheMas3212/tasd-js.git"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "^5.31.0",
-    "eslint": "^8.20.0",
+    "@stylistic/eslint-plugin-ts": "^1.6.3",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "eslint": "^8.53.0",
     "ts-loader": "^9.4.4",
     "typescript": "^4.7.4",
     "webpack": "^5.88.2",
