@@ -456,8 +456,8 @@ export class GameIdentiferPacket implements TASDPacket {
     return 2 + this.name.length + this.identifier.length;
   }
   static fromBuffer(buffer: Uint8Array) {
-    const type = readUint8(buffer, 0)
-    const base = readUint8(buffer, 1)
+    const type = readUint8(buffer, 0);
+    const base = readUint8(buffer, 1);
     const nlen = readUint8(buffer, 2);
     const name = readString(buffer, 3, nlen);
     const identifier = buffer.subarray(3 + nlen);
@@ -565,7 +565,7 @@ export class PortControllerPacket implements TASDPacket {
     return buildBuffer(g_keylen, this.key, payload);
   }
   toString() {
-    return `PortController ${this.port}, 0x${this.type.toString(16).padStart(4, '0')}`;
+    return `PortController ${this.port}, 0x${this.type.toString(16).padStart(4, "0")}`;
   }
   static readonly CONTROLLER_TYPE = {
     NES_STANDARD_CONTROLLER:                      0x0101,

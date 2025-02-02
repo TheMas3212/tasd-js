@@ -22,7 +22,7 @@ export function readUintN(buffer: Uint8Array, index: number, n: number) {
     case 2: return readUint16(buffer, index);
     case 3: return readUint24(buffer, index);
     case 4: return readUint32(buffer, index);
-    default: throw new Error('Unsupported UInt size');
+    default: throw new Error("Unsupported UInt size");
   }
 }
 
@@ -56,7 +56,7 @@ export function writeUintN(uint: number, buffer: Uint8Array, index: number, size
     case 2: return writeUint16(uint, buffer, index);
     case 3: return writeUint24(uint, buffer, index);
     case 4: return writeUint32(uint, buffer, index);
-    default: throw new Error('Unsupported UInt size');
+    default: throw new Error("Unsupported UInt size");
   }
 }
 
@@ -65,7 +65,7 @@ export function minUInt(uint: number) {
   if (uint < 65536) return 2;
   if (uint < 16777216) return 3;
   if (uint < 4294967296) return 4;
-  throw new Error('Unsupported UInt size');
+  throw new Error("Unsupported UInt size");
 }
 
 export function concatUint8Array(arrays: Uint8Array[]): Uint8Array {
@@ -82,7 +82,7 @@ export function concatUint8Array(arrays: Uint8Array[]): Uint8Array {
   return buffer;
 }
 
-const decoder = new TextDecoder('utf8');
+const decoder = new TextDecoder("utf8");
 const encoder = new TextEncoder();
 export function readString(buffer: Uint8Array, index: number, length: number) {
   return decoder.decode(buffer.subarray(index, index+length));

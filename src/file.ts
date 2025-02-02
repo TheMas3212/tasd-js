@@ -38,8 +38,8 @@ export class TASD {
     return concatUint8Array(packets);
   }
   pprint() {
-    console.log('VERSION', this.version);
-    console.log('G_KEYLEN', this.g_keylen);
+    console.log("VERSION", this.version);
+    console.log("G_KEYLEN", this.g_keylen);
     for (const packet of this.packets) {
       console.log(packet.toString());
     }
@@ -64,14 +64,14 @@ export class TASD {
     this.markDirty();
   }
   static parseFile(buffer: Uint8Array) {
-    if (buffer.length < 7) throw new Error('Input Too Short');
+    if (buffer.length < 7) throw new Error("Input Too Short");
     for (let i = 0; i < TASD.MAGIC.length; i++) {
-      if (buffer[i] !== TASD.MAGIC[i]) throw new Error('Invalid Magic Bytes');
+      if (buffer[i] !== TASD.MAGIC[i]) throw new Error("Invalid Magic Bytes");
     }
     const version = readUint16(buffer, 4);
-    if (version !== 1) throw new Error('Unsupported Version');
+    if (version !== 1) throw new Error("Unsupported Version");
     const g_keylen = readUint8(buffer, 6);
-    if (g_keylen !== 2) throw new Error('G_KEYLEN not equal to 2, unsupported');
+    if (g_keylen !== 2) throw new Error("G_KEYLEN not equal to 2, unsupported");
     const file = new TASD(version, g_keylen);
     let index = 7;
     while (index < buffer.length) {
