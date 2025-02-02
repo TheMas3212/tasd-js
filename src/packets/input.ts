@@ -36,7 +36,7 @@ export class InputMomentPacket implements TASDPacket {
     return PACKET_TYPES.INPUT_MOMENT;
   }
   get size() {
-    return 10 + this.inputs.length;
+    return 11 + this.inputs.length;
   }
   static fromBuffer(buffer: Uint8Array) {
     const port = readUint8(buffer, 0);
