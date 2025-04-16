@@ -453,7 +453,7 @@ export class GameIdentiferPacket implements TASDPacket {
     return PACKET_TYPES.GAME_IDENTIFIER;
   }
   get size() {
-    return 2 + this.name.length + this.identifier.length;
+    return 3 + this.name.length + this.identifier.length;
   }
   static fromBuffer(buffer: Uint8Array) {
     const type = readUint8(buffer, 0);
