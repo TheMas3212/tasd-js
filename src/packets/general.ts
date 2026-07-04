@@ -517,7 +517,7 @@ export class MovieLicensePacket implements TASDPacket {
     return buildBuffer(g_keylen, this.key, payload);
   }
   toString() {
-    return `SourceLink ${this.link}`;
+    return `MovieLicense ${this.link}`;
   }
 }
 
