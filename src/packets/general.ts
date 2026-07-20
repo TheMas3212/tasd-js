@@ -373,7 +373,7 @@ export class VerifiedPacket implements TASDPacket {
     return new this(readUint8(buffer, 0) !== 0);
   }
   toBuffer(g_keylen: number): Uint8Array {
-    const payload = new Uint8Array(2);
+    const payload = new Uint8Array(1);
     writeUint8(this.verified ? 1 : 0, payload, 0);
     return buildBuffer(g_keylen, this.key, payload);
   }
